@@ -5,11 +5,16 @@
 
 // Class Description: Sets up the GUI and runs the main function
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 
 public class run implements ActionListener
@@ -152,6 +157,19 @@ public class run implements ActionListener
         exit.addActionListener(this);
     }
 
+    // Uses google to find the value of the desired exchange rate from url
+    public Double getExchangeRate(String url)
+    {
+        try {
+            Document doc = Jsoup.connect(url).get();
+            Element exchange = doc.select("input[class=a61j6 vk_gy vk_sh Hg3mWc]").first();
+            return Double.valueOf(exchange.attr("value"));
+        }catch (IOException e) {
+            e.printStackTrace();
+            return 0.00;
+        }
+    }
+
 
     // A function to correctly format the returning monetary value
     public void convertToFormat(String currencyType, double rate)
@@ -181,13 +199,24 @@ public class run implements ActionListener
                         convertToFormat("gbp", 1);
                         break;
                     case 1:
-                        convertToFormat("yen", 137.31);
+                        convertToFormat("yen", getExchangeRate("https://www.google.com/search?q=gbp+to" +
+                                "+yen&oq=gbp+to+yen&aqs=chrome.0.69i59j0l7.3292j0j4&sourceid=chrome&ie=UTF-8"));
                         break;
                     case 2:
-                        convertToFormat("euro", 1.1);
+                        convertToFormat("euro", getExchangeRate("https://www.google.com/search?sxsrf=A" +
+                                "LeKk02XqKqJRNMrUX74Xp9xLo3WnPqnaA%3A1602525400129&ei=2JiEX_W-B4TB8gKwwrqACw&q=gbp+to+eu" +
+                                "ro&oq=gbp+to+euro&gs_lcp=CgZwc3ktYWIQAzIHCCMQyQMQJzIHCAAQsQMQCjICCAAyAggAMgIIADICCAAyAg" +
+                                "gAMgIIADICCAAyAggAOgcIIxCwAxAnOgcIABCwAxBDOgcIABAUEIcCOgQIABAKOgQIIxAnOggIABCxAxCD" +
+                                "AToNCAAQsQMQgwEQFBCHAjoOCAAQsQMQgwEQyQMQkQJQ4uAFWOHrBWCH7gVoBHAAeACAAX2IAbYFkgEDNS4ymAE" +
+                                "AoAEBqgEHZ3dzLXdpesgBCsABAQ&sclient=psy-ab&ved=0ahUKEwj1it-p0K_sAhWEoFwKHTChDrAQ4dUDCA0&uact=5"));
                         break;
                     case 3:
-                        convertToFormat("usd", 1.3);
+                        convertToFormat("usd", getExchangeRate("https://www.google.com/search?sxsrf=AL" +
+                                "eKk00jsOqwPAVBQ4SFimCX_TpRep8pAw%3A1602525497010&ei=OZmEX8wYxKDyAr2Qg7gF&q=gbp+to+USD&o" +
+                                "q=gbp+to+USD&gs_lcp=CgZwc3ktYWIQAzIHCCMQyQMQJzIFCAAQkQIyCggAELEDEBQQhwIyCAgAELEDEIMBMg" +
+                                "IIADICCAAyAggAMgIIADICCAAyAggAOgcIIxCwAxAnOgcIABCwAxBDOgkIABCwAxAKEENQ_6QEWJWnBGDxpwRo" +
+                                "AnAAeACAAVKIAdUBkgEBM5gBAKABAaoBB2d3cy13aXrIAQrAAQE&sclient=psy-ab&ved=0ahUKEwiMmfjX0K_" +
+                                "sAhVEkFwKHT3IAFcQ4dUDCA0&uact=5"));
                         break;
                 }
                 break;
@@ -197,16 +226,33 @@ public class run implements ActionListener
                 switch (convertTo.getSelectedIndex())
                 {
                     case 0:
-                        convertToFormat("gbp", 0.0073);
+                        convertToFormat("gbp", getExchangeRate("https://www.google.com/search?sxsrf=ALe" +
+                                "Kk00aA-zpQPnKVa65qRDipXdhyqflTw%3A1602525568458&ei=gJmEX7fCG5WBhbIP67ijgA0&q=yen+to+gbp" +
+                                "&oq=yen+to+gbp&gs_lcp=CgZwc3ktYWIQAzIMCCMQyQMQJxBGEIICMgQIABBDMgIIADICCAAyAggAMgIIADoHC" +
+                                "CMQsAMQJzoHCAAQRxCwAzoHCCMQyQMQJzoECCMQJzoICAAQsQMQgwE6CAguELEDEIMBOgIILjoFCAAQsQM6DQgA" +
+                                "ELEDEIMBEMkDEEM6BwgAELEDEEM6CggAELEDEBQQhwI6CggAELEDEIMBEENQ0OABWJDtAWD87gFoA3AAeACAAY8" +
+                                "BiAGQCJIBAzYuNJgBAKABAaoBB2d3cy13aXrIAQnAAQE&sclient=psy-ab&ved=0ahUKEwi3goH60K_sAhWVQE" +
+                                "EAHWvcCNAQ4dUDCA0&uact=5"));
                         break;
                     case 1:
                         convertToFormat("yen", 1);
                         break;
                     case 2:
-                        convertToFormat("euro", 0.0080);
+                        convertToFormat("euro", getExchangeRate("https://www.google.com/search?sxsrf=A" +
+                                "LeKk00Wa6ZViWUFuDrUyyq0gjTdxEZiZA%3A1602525599839&ei=n5mEX6bYMsvvgAbr2JrQDw&q=yen+to+eu" +
+                                "ro&oq=yen+to+euro&gs_lcp=CgZwc3ktYWIQAzIECCMQJzIOCAAQsQMQgwEQyQMQkQIyBQgAEJECMgIIADICCA" +
+                                "AyAggAMgIIADICCAAyBAgAEAoyBAgAEAo6BwgjELADECc6BwgAELADEEM6BwgjEMkDECc6BAgAEEM6CAgAELEDE" +
+                                "IMBOg4ILhCxAxCDARDHARCjAjoKCAAQsQMQFBCHAjoICC4QsQMQgwE6BQguELEDOgcIABCxAxBDOgUIABCxAzoM" +
+                                "CCMQyQMQJxBGEIICUNvjAVi_8QFgs_MBaAVwAHgAgAF2iAH_B5IBAzguM5gBAKABAaoBB2d3cy13aXrIAQrAAQE" +
+                                "&sclient=psy-ab&ved=0ahUKEwjmo_yI0a_sAhXLN8AKHWusBvoQ4dUDCA0&uact=5"));
                         break;
                     case 3:
-                        convertToFormat("usd", 0.0095);
+                        convertToFormat("usd", getExchangeRate("https://www.google.com/search?sxsrf=ALe" +
+                                "Kk03GXemmPFIoqTYZYLDyD-nsKMhFMQ%3A1602525631754&ei=v5mEX4vILZWhgAa_nbXoCA&q=yen+to+usd&" +
+                                "oq=yen+to+usd&gs_lcp=CgZwc3ktYWIQAzIMCCMQyQMQJxBGEIICMgIIADICCAAyAggAMgIIADICCAAyAggAMg" +
+                                "IIADICCAAyAggAOgcIIxCwAxAnOgcIABCwAxBDOgcIIxDJAxAnUK7oAVis6gFgkOsBaAJwAHgAgAGJAYgBngKSA" +
+                                "QMyLjGYAQCgAQGqAQdnd3Mtd2l6yAEKwAEB&sclient=psy-ab&ved=0ahUKEwjLo5iY0a_sAhWVEMAKHb9ODY0" +
+                                "Q4dUDCA0&uact=5"));
                         break;
                 }
                 break;
@@ -216,16 +262,33 @@ public class run implements ActionListener
                 switch (convertTo.getSelectedIndex())
                 {
                     case 0:
-                        convertToFormat("gbp", 0.91);
+                        convertToFormat("gbp", getExchangeRate("https://www.google.com/search?sxsrf=ALe" +
+                                "Kk032mLG2NJhQpY6nEgQGtZTiWFrLcw%3A1602525662706&ei=3pmEX9vgKtSsgQaO-J6ICQ&q=euro+to+gbp" +
+                                "&oq=euro+to+gbp&gs_lcp=CgZwc3ktYWIQAzIKCAAQsQMQyQMQCjIFCAAQkQIyBAgAEAoyBAgAEAoyBAgAEAoy" +
+                                "BAgAEAoyBAgAEAoyBAgAEAoyBAgAEAoyBAgAEAo6BwgjELADECc6BwgAELADEEM6BAgjECc6CQgAEMkDEAoQQzo" +
+                                "KCAAQsQMQgwEQQzoICAAQsQMQgwE6AggAOgQIABBDOgcIABDJAxBDOgYIABAKEEM6CggAELEDEBQQhwI6BwgAE" +
+                                "LEDEEM6DwgAELEDEIMBEMkDEAoQQzoFCAAQsQM6CAgAEMkDEJECOgcIABCxAxAKUKq6AVipxwFg3cgBaAZwAHgA" +
+                                "gAGQAYgB0AiSAQM1LjaYAQCgAQGqAQdnd3Mtd2l6yAEKwAEB&sclient=psy-ab&ved=0ahUKEwjbx_mm0a_sAh" +
+                                "VUVsAKHQ68B5EQ4dUDCA0&uact=5"));
                         break;
                     case 1:
-                        convertToFormat("yen", 124.39);
+                        convertToFormat("yen", getExchangeRate("https://www.google.com/search?sxsrf=AL" +
+                                "eKk00xhyj5y6FEcJaG02TkhIjl8umW0Q%3A1602525689224&ei=-ZmEX6ygDbLD8gKEiazIBA&q=euro+to+y" +
+                                "en&oq=euro+to+yen&gs_lcp=CgZwc3ktYWIQAzIICAAQyQMQkQIyAggAMgIIADICCAAyAggAMgIIADICCAAyA" +
+                                "ggAMgIIADICCAA6BwgAELADEEM6CQgAELADEAoQQzoFCAAQkQI6BAgAEApQlJEEWMKSBGDTlARoAnAAeACAAVi" +
+                                "IAegBkgEBM5gBAKABAaoBB2d3cy13aXrIAQrAAQE&sclient=psy-ab&ved=0ahUKEwjsgMyz0a_sAhWyoVwKHY" +
+                                "QEC0kQ4dUDCA0&uact=5"));
                         break;
                     case 2:
                         convertToFormat("euro", 1);
                         break;
                     case 3:
-                        convertToFormat("usd", 1.18);
+                        convertToFormat("usd", getExchangeRate("https://www.google.com/search?sxsrf=ALe" +
+                                "Kk01wz7ACy5eDPrxZeYtSKl__irWm2w%3A1602525758218&ei=PpqEX9j7DIyT8gKe_qLgBQ&q=euro+to+usd" +
+                                "&oq=euro+to+usd&gs_lcp=CgZwc3ktYWIQAzIECCMQJzIICAAQyQMQkQIyBAgAEAoyBAgAEAoyBAgAEAoyBAgA" +
+                                "EAoyBAgAEAoyBAgAEAoyBAgAEAoyBAgAEAo6BwgAELADEEM6CggAELEDEMkDEAo6AggAUPmpAVj-qwFg16wBaAJ" +
+                                "wAHgAgAFxiAHXAZIBAzAuMpgBAKABAaoBB2d3cy13aXrIAQrAAQE&sclient=psy-ab&ved=0ahUKEwjYkr_U0a" +
+                                "_sAhWMiVwKHR6_CFwQ4dUDCA0&uact=5"));
                         break;
                 }
                 break;
@@ -235,16 +298,32 @@ public class run implements ActionListener
                 switch (convertTo.getSelectedIndex())
                 {
                     case 0:
-                        convertToFormat("gbp", 0.77);
+                        convertToFormat("gbp", getExchangeRate("https://www.google.com/search?sxsrf=ALe" +
+                                "Kk03i-hSz4usWiBELMH5tB2FlG_fyCQ%3A1602525781197&ei=VZqEX9bPC5Wx8gLG9KTwAQ&q=usd+to+gb" +
+                                "p&oq=usd+to+gbp&gs_lcp=CgZwc3ktYWIQAzIMCCMQyQMQJxBGEIICMgIIADICCAAyAggAMgIIADICCAAyAgg" +
+                                "AMgIIADICCAAyAggAOgcIIxCwAxAnOgcIABCwAxBDOgkIABCwAxAKEEM6BAgjECc6CQgAEMkDEAoQQzoECAAQQz" +
+                                "oKCAAQsQMQgwEQQzoPCAAQsQMQgwEQyQMQChBDOgcIABCxAxBDOg0IABCxAxCDARAUEIcCOgcIIxDJAxAnUIjAA" +
+                                "ViI0gFg49MBaANwAHgAgAFiiAG8BpIBAjEwmAEAoAEBqgEHZ3dzLXdpesgBCsABAQ&sclient=psy-ab&ved=0a" +
+                                "hUKEwiWzrnf0a_sAhWVmFwKHUY6CR4Q4dUDCA0&uact=5"));
                         break;
                     case 1:
-                        convertToFormat("euro", 105.49);
+                        convertToFormat("yen", getExchangeRate("https://www.google.com/search?sxsrf=AL" +
+                                "eKk00D-PQAjETKU8Inm9SjrwKjmPfWDQ%3A1602525809042&ei=cZqEX8CXApmDhbIP3IacoA4&q=usd+to+y" +
+                                "en&oq=usd+to+yen&gs_lcp=CgZwc3ktYWIQAzIHCCMQyQMQJzIFCAAQkQIyAggAMgIIADICCAAyAggAMgIIADI" +
+                                "CCAAyAggAMgIIADoHCCMQsAMQJzoHCAAQsAMQQzoLCAAQsQMQgwEQkQI6BAgAEApQ078BWPfAAWDgwgFoAnAA" +
+                                "eACAAX-IAbUCkgEDMS4ymAEAoAEBqgEHZ3dzLXdpesgBCsABAQ&sclient=psy-ab&ved=0ahUKEwiAlN3s0a_" +
+                                "sAhWZQUEAHVwDB-QQ4dUDCA0&uact=5"));
                         break;
                     case 2:
-                        convertToFormat("euro", 0.85);
+                        convertToFormat("euro", getExchangeRate("https://www.google.com/search?sxsrf=AL" +
+                                "eKk02JwE9NpURBEtZ7tclxocHGSmYvxg%3A1602525834686&ei=ipqEX6-4KZG78gLcgLTQBA&q=usd+to+eur" +
+                                "&oq=usd+to+eur&gs_lcp=CgZwc3ktYWIQAzIECCMQJzIPCAAQsQMQgwEQyQMQChBDMgcIABAUEIcCMgIIADICC" +
+                                "AAyAggAMgIIADICCAAyAggAMgIIADoHCCMQsAMQJzoHCAAQsAMQQzoICAAQsQMQgwFQn5ACWM-RAmDSlAJoAnAA" +
+                                "eACAAU6IAd8BkgEBM5gBAKABAaoBB2d3cy13aXrIAQrAAQE&sclient=psy-ab&ved=0ahUKEwivpfr40a_sAhW" +
+                                "RnVwKHVwADUoQ4dUDCA0&uact=5"));
                         break;
                     case 3:
-                        convertToFormat("euro", 1);
+                        convertToFormat("usd", 1);
                         break;
                 }
                 break;
