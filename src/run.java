@@ -82,7 +82,7 @@ public class run implements ActionListener
         mainApp.add(amount);
 
         // Create the currency names
-        String currencies[] = {"British GBP", "Chinese Yen", "Euro", "USA USD"};
+        String currencies[] = {"British GBP", "Japanese Yen", "Euro", "USA USD"};
 
         // Create the combobox objects and add to panel
         convertFrom = new JComboBox(currencies);
@@ -154,14 +154,15 @@ public class run implements ActionListener
 
 
     // A function to correctly format the returning monetary value
-    public String convertToFormat(String currencyType, double rate)
+    public void convertToFormat(String currencyType, double rate)
     {
         try {
             double amount_for_convert = Double.parseDouble(amount.getText());
-            return String.format("%,.2f %s.", amount_for_convert * rate, currencyType);
+            output.setText(String.format("%,.2f %s.", amount_for_convert * rate, currencyType));
+            rateValue.setText("1 to " + rate);
         }catch(Exception e)
         {
-            return "Please enter a number value";
+            output.setText("Please enter a number value");
         }
     }
 
@@ -177,20 +178,16 @@ public class run implements ActionListener
                 switch (convertTo.getSelectedIndex())
                 {
                     case 0:
-                        output.setText(convertToFormat("gbp", 1));
-                        rateValue.setText("1 to 1");
+                        convertToFormat("gbp", 1);
                         break;
                     case 1:
-                        output.setText(convertToFormat("yen", 137.31));
-                        rateValue.setText("1 to 137.31");
+                        convertToFormat("yen", 137.31);
                         break;
                     case 2:
-                        output.setText(convertToFormat("euro", 1.1));
-                        rateValue.setText("1 to 1.1");
+                        convertToFormat("euro", 1.1);
                         break;
                     case 3:
-                        output.setText(convertToFormat("usd", 1.3));
-                        rateValue.setText("1 to 1.3");
+                        convertToFormat("usd", 1.3);
                         break;
                 }
                 break;
@@ -200,20 +197,16 @@ public class run implements ActionListener
                 switch (convertTo.getSelectedIndex())
                 {
                     case 0:
-                        output.setText(convertToFormat("gbp", 0.0073));
-                        rateValue.setText("1 to 0.0073");
+                        convertToFormat("gbp", 0.0073);
                         break;
                     case 1:
-                        output.setText(convertToFormat("yen", 1));
-                        rateValue.setText("1 to 1");
+                        convertToFormat("yen", 1);
                         break;
                     case 2:
-                        output.setText(convertToFormat("euro", 0.0080));
-                        rateValue.setText("1 to 0.0080");
+                        convertToFormat("euro", 0.0080);
                         break;
                     case 3:
-                        output.setText(convertToFormat("usd", 0.0095));
-                        rateValue.setText("1 to 0.0095");
+                        convertToFormat("usd", 0.0095);
                         break;
                 }
                 break;
@@ -223,20 +216,16 @@ public class run implements ActionListener
                 switch (convertTo.getSelectedIndex())
                 {
                     case 0:
-                        output.setText(convertToFormat("gbp", 0.91));
-                        rateValue.setText("1 to 0.91");
+                        convertToFormat("gbp", 0.91);
                         break;
                     case 1:
-                        output.setText(convertToFormat("yen", 124.39));
-                        rateValue.setText("1 to 124.39");
+                        convertToFormat("yen", 124.39);
                         break;
                     case 2:
-                        output.setText(convertToFormat("euro", 1));
-                        rateValue.setText("1 to 1");
+                        convertToFormat("euro", 1);
                         break;
                     case 3:
-                        output.setText(convertToFormat("usd", 1.18));
-                        rateValue.setText("1 to 1.18");
+                        convertToFormat("usd", 1.18);
                         break;
                 }
                 break;
@@ -246,20 +235,16 @@ public class run implements ActionListener
                 switch (convertTo.getSelectedIndex())
                 {
                     case 0:
-                        output.setText(convertToFormat("gbp", 0.77));
-                        rateValue.setText("1 to 0.77");
+                        convertToFormat("gbp", 0.77);
                         break;
                     case 1:
-                        output.setText(convertToFormat("euro", 105.49));
-                        rateValue.setText("1 to 105.49");
+                        convertToFormat("euro", 105.49);
                         break;
                     case 2:
-                        output.setText(convertToFormat("euro", 0.85));
-                        rateValue.setText("1 to 0.85");
+                        convertToFormat("euro", 0.85);
                         break;
                     case 3:
-                        output.setText(convertToFormat("euro", 1));
-                        rateValue.setText("1 to 1");
+                        convertToFormat("euro", 1);
                         break;
                 }
                 break;
@@ -277,13 +262,13 @@ public class run implements ActionListener
 
         // The exit button of the application, offers a decision box where the user can leave or continue with the app
         else if (e.getSource() == exit) {
-            int confirmed = JOptionPane.showConfirmDialog(null,
+            int confirmed = JOptionPane.showConfirmDialog(frame,
                     "Are you sure you want to exit the program?", "Exit Program Message Box",
                     JOptionPane.YES_NO_OPTION);
 
             // Just for fun :)
             if (confirmed == JOptionPane.YES_OPTION) {
-                int sure = JOptionPane.showConfirmDialog(null,
+                int sure = JOptionPane.showConfirmDialog(frame,
                         "But are you really sure about that?", "Exit Program Message Box",
                         JOptionPane.YES_NO_OPTION);
                 if (sure == JOptionPane.YES_OPTION)
