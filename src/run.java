@@ -14,6 +14,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.font.TextAttribute;
 import java.io.IOException;
 
 
@@ -29,7 +30,7 @@ public class run implements ActionListener
     Border raised;
     JComboBox convertFrom, convertTo;
     Font titleFont, normalFont, resultFont;
-    Color lightGrey, black, dangerRed;
+    Color lightGrey, black, white;
 
     // Constructor method
     public run()
@@ -37,15 +38,15 @@ public class run implements ActionListener
         // Create all style elements
         raised = BorderFactory.createRaisedBevelBorder();
         titleFont = new Font("TimesRoman", Font.BOLD, 28);
-        normalFont = new Font("TimesRoman", Font.ITALIC, 14);
-        resultFont = new Font("TimesRoman", Font.BOLD, 16);
+        normalFont = new Font("TimesRoman", Font.ITALIC, 20);
+        resultFont = new Font("TimesRoman", Font.BOLD, 28);
         lightGrey = new Color(50, 50,50);
         black = new Color(14, 2,8);
-        dangerRed = new Color(255, 36,0);
+        white = new Color(255, 255,255);
 
         // Create the frame object
         frame = new JFrame("Currency Converter");
-        frame.setBounds(100, 100, 600, 400);
+        frame.setBounds(100, 100, 450, 400);
         frame.setResizable(false);
 
         // Create all panel objects
@@ -63,17 +64,17 @@ public class run implements ActionListener
 
         // Add the panels to the frame
         mainPanel.setLayout(null);
-        mainApp.setLayout(null);
-        title.setBounds(20,20, 540,50);
-        mainApp.setBounds(20, 80, 540, 270);
+        title.setBounds(20,20, 400,50);
+        mainApp.setBounds(20, 80, 400, 270);
         mainPanel.add(title);
         frame.add(mainPanel);
+        mainApp.setLayout(new GridLayout(0,1));
         mainPanel.add(mainApp);
 
         // Create the label objects
         mainTitle = new JLabel("Currency Converter".toUpperCase());
-        output = new JLabel("");
-        rateValue = new JLabel("");
+        output = new JLabel("_____");
+        rateValue = new JLabel("_____");
         inputPrompt1 = new JLabel("Amount");
         inputPrompt2 = new JLabel("Convert from");
         inputPrompt3 = new JLabel("Convert to");
@@ -81,22 +82,15 @@ public class run implements ActionListener
         conversionRate = new JLabel("At a rate of: ");
 
 
-        // Create the text area and add to panel
+        // Create the text area
         amount = new JTextField("Enter an amount");
-        amount.setBounds(40,60,120,30);
-        mainApp.add(amount);
 
         // Create the currency names
         String currencies[] = {"British GBP", "Japanese Yen", "Euro", "USA USD"};
 
-        // Create the combobox objects and add to panel
+        // Create the combobox objects
         convertFrom = new JComboBox(currencies);
-        convertFrom.setBounds(200, 60, 100, 30);
         convertTo = new JComboBox(currencies);
-        convertTo.setBounds(330, 60, 100, 30);
-        mainApp.add(convertFrom);
-        mainApp.add(convertTo);
-
 
         // Style the labels
         mainTitle.setFont(titleFont);
@@ -109,32 +103,45 @@ public class run implements ActionListener
         conversionRate.setFont(resultFont);
 
         // Set all label colors
-        mainTitle.setForeground(dangerRed);
-        output.setForeground(dangerRed);
-        rateValue.setForeground(dangerRed);
-        inputPrompt1.setForeground(dangerRed);
-        inputPrompt2.setForeground(dangerRed);
-        inputPrompt3.setForeground(dangerRed);
-        result.setForeground(dangerRed);
-        conversionRate.setForeground(dangerRed);
+        mainTitle.setForeground(white);
+        output.setForeground(white);
+        rateValue.setForeground(white);
+        inputPrompt1.setForeground(white);
+        inputPrompt2.setForeground(white);
+        inputPrompt3.setForeground(white);
+        result.setForeground(white);
+        conversionRate.setForeground(white);
 
         // Set the bounds of all labels
-        inputPrompt1.setBounds(40,35,100,30);
-        inputPrompt2.setBounds(200, 35, 100, 30);
-        inputPrompt3.setBounds(330, 35, 100, 30);
-        result.setBounds(100, 120, 180, 30);
-        conversionRate.setBounds(100,155, 150, 30);
-        output.setBounds(250, 120, 220, 30);
-        rateValue.setBounds(250, 155, 100, 30);
+//        inputPrompt1.setBounds(40,35,100,30);
+//        inputPrompt2.setBounds(200, 35, 100, 30);
+//        inputPrompt3.setBounds(330, 35, 100, 30);
+//        result.setBounds(100, 120, 180, 30);
+//        conversionRate.setBounds(100,155, 150, 30);
+//        output.setBounds(250, 120, 220, 30);
+//        rateValue.setBounds(250, 155, 100, 30);
 
         // Place all of the labels
         title.add(mainTitle);
+
+        // Enter amount label and textbox
         mainApp.add(inputPrompt1);
+        mainApp.add(amount);
+
+        // Convert from combobox
         mainApp.add(inputPrompt2);
+        mainApp.add(convertFrom);
+
+        // Convert to combobox
         mainApp.add(inputPrompt3);
+        mainApp.add(convertTo);
+
+        // Converted amount
         mainApp.add(result);
-        mainApp.add(conversionRate);
         mainApp.add(output);
+
+        // Conversion rate
+        mainApp.add(conversionRate);
         mainApp.add(rateValue);
 
         // Create the button objects
@@ -362,6 +369,7 @@ public class run implements ActionListener
     // Run the main application
     public static void main(String[] args)
     {
+        System.out.println(Toolkit.getDefaultToolkit().getFontList());
         run startApp = new run();
     }
 }
