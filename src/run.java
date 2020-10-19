@@ -14,7 +14,6 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.font.TextAttribute;
 import java.io.IOException;
 
 
@@ -22,11 +21,11 @@ public class run implements ActionListener
 {
 
     // Create variable pointers
-    JFrame frame;
+    JFrame frame, resultFrame;
     JPanel mainPanel, title, mainApp;
     JTextField amount;
-    JLabel mainTitle, output, result, conversionRate, rateValue, inputPrompt1, inputPrompt2, inputPrompt3;
-    JButton convert, exit;
+    JLabel mainTitle, convertedRate, result, conversionRate, resultAmount, inputPrompt1, inputPrompt2, inputPrompt3;
+    JButton convert, exit, returnToConverter;
     Border raised;
     JComboBox convertFrom, convertTo;
     Font titleFont, normalFont, resultFont;
@@ -43,6 +42,12 @@ public class run implements ActionListener
         lightGrey = new Color(50, 50,50);
         black = new Color(14, 2,8);
         white = new Color(255, 255,255);
+
+        // Create objects for the extended frame
+        resultFrame = new JFrame("Converted Values");
+        returnToConverter = new JButton("Return");
+        resultAmount = new JLabel();
+        convertedRate = new JLabel();
 
         // Create the frame object
         frame = new JFrame("Currency Converter");
@@ -73,8 +78,8 @@ public class run implements ActionListener
 
         // Create the label objects
         mainTitle = new JLabel("Currency Converter".toUpperCase());
-        output = new JLabel("_____");
-        rateValue = new JLabel("_____");
+//        output = new JLabel("_____");
+//        rateValue = new JLabel("_____");
         inputPrompt1 = new JLabel("Amount");
         inputPrompt2 = new JLabel("Convert from");
         inputPrompt3 = new JLabel("Convert to");
@@ -94,8 +99,8 @@ public class run implements ActionListener
 
         // Style the labels
         mainTitle.setFont(titleFont);
-        output.setFont(normalFont);
-        rateValue.setFont(normalFont);
+//        output.setFont(normalFont);
+//        rateValue.setFont(normalFont);
         inputPrompt1.setFont(normalFont);
         inputPrompt2.setFont(normalFont);
         inputPrompt3.setFont(normalFont);
@@ -104,8 +109,8 @@ public class run implements ActionListener
 
         // Set all label colors
         mainTitle.setForeground(white);
-        output.setForeground(white);
-        rateValue.setForeground(white);
+//        output.setForeground(white);
+//        rateValue.setForeground(white);
         inputPrompt1.setForeground(white);
         inputPrompt2.setForeground(white);
         inputPrompt3.setForeground(white);
@@ -137,12 +142,12 @@ public class run implements ActionListener
         mainApp.add(convertTo);
 
         // Converted amount
-        mainApp.add(result);
-        mainApp.add(output);
+        // mainApp.add(result);
+        // mainApp.add(output);
 
         // Conversion rate
-        mainApp.add(conversionRate);
-        mainApp.add(rateValue);
+        // mainApp.add(conversionRate);
+        // mainApp.add(rateValue);
 
         // Create the button objects
         convert = new JButton("Convert");
@@ -162,6 +167,25 @@ public class run implements ActionListener
         convert.addActionListener(this);
         amount.addActionListener(this);
         exit.addActionListener(this);
+        returnToConverter.addActionListener(this);
+
+        ////////////////// Define the new frame ////////////////////////////////////
+        JPanel mainPanel = new JPanel();
+
+        // Style elements
+        mainPanel.setBorder(raised);
+        resultAmount.setFont(titleFont);
+        convertedRate.setFont(normalFont);
+
+
+        resultFrame.setBounds(200, 200, 300,200);
+        resultFrame.setResizable(false);
+        resultFrame.add(mainPanel);
+
+        // Add the labels to the panel
+        mainPanel.add(resultAmount);
+        mainPanel.add(convertedRate);
+        mainPanel.add(returnToConverter);
     }
 
     // Uses google to find the value of the desired exchange rate from url
@@ -177,17 +201,17 @@ public class run implements ActionListener
         }
     }
 
-
     // A function to correctly format the returning monetary value
     public void convertToFormat(String currencyType, double rate)
     {
         try {
             double amount_for_convert = Double.parseDouble(amount.getText());
-            output.setText(String.format("%,.2f %s.", amount_for_convert * rate, currencyType));
-            rateValue.setText("1 to " + rate);
+            resultAmount.setText(String.format("Converted amount: %,.2f %s.", amount_for_convert * rate, currencyType));
+            convertedRate.setText("At a rate of: 1 to " + rate);
         }catch(Exception e)
         {
-            output.setText("Please enter a number value");
+            // output.setText("Please enter a number value");
+            System.out.println(e);
         }
     }
 
@@ -343,6 +367,7 @@ public class run implements ActionListener
 
         if (e.getSource() == convert)
         {
+            resultFrame.setVisible(true);
             conversionType();
         }
 
@@ -362,6 +387,10 @@ public class run implements ActionListener
                     System.exit(0);
                 }
             }
+        }
+        if (e.getSource() == returnToConverter)
+        {
+            resultFrame.setVisible(false);
         }
     }
 
